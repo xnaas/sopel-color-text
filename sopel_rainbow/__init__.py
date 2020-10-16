@@ -6,6 +6,7 @@ A Sopel plugin to make things RAINBOW COLORED.
 from __future__ import unicode_literals, absolute_import, division, print_function
 
 from collections import deque
+import random
 import unicodedata
 
 from sopel import formatting, module
@@ -19,6 +20,8 @@ class RainbowSection(types.StaticSection):
     Defaults to a standard ROYGBIV rainbow (assuming readers' clients use
     typical IRC color code mappings).
     """
+    random_start = types.ValidatedAttribute('random_start', bool, default=False)
+    """Whether to randomize the start color."""
 
 
 def configure(config):
@@ -26,6 +29,10 @@ def configure(config):
     config.rainbow.configure_setting(
         'rainbow',
         'Specify the order of IRC color codes to use in the "rainbow":'
+    )
+    config.rainbow.configure_setting(
+        'random_start',
+        'Randomize start position in the rainbow?'
     )
 
 
@@ -44,6 +51,8 @@ def rainbow_cmd(bot, trigger):
         return module.NOLIMIT
 
     colors = deque(bot.config.rainbow.order)
+    if bot.config.rainbow.random_start:
+        colors.rotate(random.randint(len(colors) * -1, -1))
 
     rainbow_text = ''
     for char in text:
