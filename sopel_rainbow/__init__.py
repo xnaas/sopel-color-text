@@ -13,6 +13,13 @@ from sopel import formatting, module
 from sopel.config import types
 
 
+# Remove when dropping support for Sopel < 7.1
+if hasattr(formatting, 'plain'):
+    clean = formatting.plain
+else:
+    clean = lambda t: t
+
+
 class RainbowSection(types.StaticSection):
     order = types.ListAttribute('order', default=[4, 7, 8, 3, 12, 2, 6])
     """The order of color codes to use.
@@ -43,8 +50,7 @@ def setup(bot):
 @module.commands('rainbow')
 def rainbow_cmd(bot, trigger):
     """Make text into a rainbow."""
-    # TODO: Use `formatting.plain()` once Sopel 7.1 is out
-    text = trigger.group(2)
+    text = clean(trigger.group(2))
 
     if text == None:
         bot.reply("I can't make a rainbow out of nothing!")
