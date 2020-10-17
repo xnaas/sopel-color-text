@@ -3,9 +3,10 @@
 History of `sopel-color-text`, a horrible plugin
 of mostly stolen code.
 
-### sopel-color-text 0.3.0
+### sopel-color-text 0.3.1
 
 * Minor text fixes
+* Removed code bloat
 
 ### sopel-color-text 0.2.0
 
