@@ -48,7 +48,7 @@ class USASection(types.StaticSection):
 
 def setup(bot):
     bot.config.define_section('rainbow', RainbowPlusSection)
-
+    bot.config.define_section('usa', RainbowPlusSection)
 
 @module.commands('rainbow')
 def rainbow_cmd(bot, trigger):
