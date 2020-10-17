@@ -106,3 +106,23 @@ def usa_cmd(bot, trigger):
             for char in text
         )
     )
+
+module.commands('commie')
+def commie_cmd(bot, trigger):
+    """Racist commie command."""
+    text = clean(trigger.group(2))
+
+    if text == None:
+        bot.reply("I need text to commie-ize!")
+        return module.NOLIMIT
+
+    colors = bot.config.commie.order
+    color_cycle = itertools.cycle(colors)
+
+    bot.say(
+        ''.join(
+            char if unicodedata.category(char) == 'Zs'
+            else formatting.color(char, next(color_cycle))
+            for char in text
+        )
+    )
