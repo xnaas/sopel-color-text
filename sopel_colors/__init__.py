@@ -25,25 +25,13 @@ class RainbowSection(types.StaticSection):
     Defaults to a standard ROYGBIV rainbow (assuming readers' clients use
     typical IRC color code mappings)."""
 
-def rainbowconf(config):
-    config.define_section('rainbow', RainbowSection)
-    config.rainbow.configure_setting('rainbow')
-
 class USASection(types.StaticSection):
     order = types.ListAttribute('order', default=[4, 0, 2])
     """USA! USA!"""
 
-def usaconf(config):
-    config.define_section('usa', USASection)
-    config.usa.configure_setting('usa')
-
 class CommieSection(types.StaticSection):
     order = types.ListAttribute('order', default=[0, 2, 4])
     """God damn commies."""
-
-def commieconf(config):
-    config.define_section('commie', CommieSection)
-    config.commie.configure_setting('commie')
 
 def setup(bot):
     bot.config.define_section('rainbow', RainbowSection)
