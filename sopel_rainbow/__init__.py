@@ -20,7 +20,7 @@ else:
     clean = lambda t: t
 
 
-class RainbowSection(types.StaticSection):
+class RainbowPlusSection(types.StaticSection):
     order = types.ListAttribute('order', default=[4, 7, 8, 3, 12, 2, 6])
     """The order of color codes to use.
 
@@ -32,7 +32,7 @@ class RainbowSection(types.StaticSection):
 
 
 def configure(config):
-    config.define_section('rainbow', RainbowSection)
+    config.define_section('rainbow', RainbowPlusSection)
     config.rainbow.configure_setting(
         'rainbow',
         'Specify the order of IRC color codes to use in the "rainbow":'
@@ -47,7 +47,7 @@ class USASection(types.StaticSection):
     """USA! USA!"""
 
 def setup(bot):
-    bot.config.define_section('rainbow', RainbowSection)
+    bot.config.define_section('rainbow', RainbowPlusSection)
 
 
 @module.commands('rainbow')
