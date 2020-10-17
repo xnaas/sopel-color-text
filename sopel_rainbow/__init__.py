@@ -12,13 +12,11 @@ import unicodedata
 from sopel import formatting, module
 from sopel.config import types
 
-
 # Remove when dropping support for Sopel < 7.1
 if hasattr(formatting, 'plain'):
     clean = formatting.plain
 else:
     clean = lambda t: t
-
 
 class RainbowSection(types.StaticSection):
     order = types.ListAttribute('order', default=[4, 7, 8, 3, 12, 2, 6])
@@ -30,8 +28,7 @@ class RainbowSection(types.StaticSection):
     random_start = types.ValidatedAttribute('random_start', bool, default=False)
     """Whether to randomize the start color."""
 
-
-def configure(config):
+def rainbowconf(config):
     config.define_section('rainbow', RainbowSection)
     config.rainbow.configure_setting(
         'rainbow',
@@ -46,7 +43,7 @@ class USASection(types.StaticSection):
     order = types.ListAttribute('order', default=[4, 0, 2])
     """USA! USA!"""
 
-def configure(config):
+def usaconf(config):
     config.define_section('usa', USASection)
     config.usa.configure_setting('usa')
 
@@ -54,7 +51,7 @@ class CommieSection(types.StaticSection):
     order = types.ListAttribute('order', default=[0, 2, 4])
     """God damn commies."""
 
-def configure(config):
+def commieconf(config):
     config.define_section('commie', CommieSection)
     config.commie.configure_setting('commie')
 
