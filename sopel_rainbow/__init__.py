@@ -46,9 +46,13 @@ class USASection(types.StaticSection):
     order = types.ListAttribute('order', default=[4, 0, 2])
     """USA! USA!"""
 
+def configure(config):
+    config.define_section('usa', USASection)
+    config.usa.configure_setting('usa')
+
 def setup(bot):
     bot.config.define_section('rainbow', RainbowPlusSection)
-    bot.config.define_section('usa', RainbowPlusSection)
+    bot.config.define_section('usa', USASection)
 
 @module.commands('rainbow')
 def rainbow_cmd(bot, trigger):
