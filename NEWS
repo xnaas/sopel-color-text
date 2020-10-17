@@ -1,9 +1,13 @@
 ## Changelog
 
-The brief, illustrious history of `sopel-rainbow`, a silly little plugin
-spawned from [a tongue-in-cheek
-upstream issue](https://github.com/sopel-irc/sopel/issues/1962).
+History of `sopel-color-text`, a horrible plugin
+of mostly stolen code.
 
+### sopel-color-text 0.2.0
+
+* Removed config options
+* Added `usa` command
+* Added `commie` command
 
 ### sopel-rainbow 0.1.0
 
