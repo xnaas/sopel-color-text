@@ -5,7 +5,7 @@ A Sopel plugin to make things RAINBOW COLORED.
 """
 from __future__ import unicode_literals, absolute_import, division, print_function
 
-from collections import deque
+import itertools
 import random
 import unicodedata
 
@@ -56,17 +56,17 @@ def rainbow_cmd(bot, trigger):
         bot.reply("I can't make a rainbow out of nothing!")
         return module.NOLIMIT
 
-    colors = deque(bot.config.rainbow.order)
+    colors = bot.config.rainbow.order
+    color_cycle = itertools.cycle(colors)
+
     if bot.config.rainbow.random_start:
-        colors.rotate(random.randint(len(colors) * -1, -1))
+        for _ in range(len(colors)):
+            next(color_cycle)
 
-    rainbow_text = ''
-    for char in text:
-        if unicodedata.category(char) == 'Zs':
-            # don't color whitespace; there's no point
-            rainbow_text += char
-        else:
-            rainbow_text += formatting.color(char, colors[0])
-            colors.rotate(-1)
-
-    bot.say(rainbow_text)
+    bot.say(
+        ''.join(
+            char if unicodedata.category(char) == 'Zs'
+            else formatting.color(char, next(color_cycle))
+            for char in text
+        )
+    )
