@@ -104,7 +104,7 @@ def usa_cmd(bot, trigger):
         )
     )
 
-module.commands('commie')
+@module.commands('commie')
 def commie_cmd(bot, trigger):
     """Racist commie command."""
     text = clean(trigger.group(2))
