@@ -1,7 +1,7 @@
 # coding=utf8
-"""sopel-rainbow
+"""sopel-rainbow-plus
 
-A Sopel plugin to make things RAINBOW COLORED.
+A Sopel plugin to make things rainbow colored or to distribute freedom.
 """
 from __future__ import unicode_literals, absolute_import, division, print_function
 
@@ -42,6 +42,9 @@ def configure(config):
         'Randomize start position in the rainbow?'
     )
 
+class USASection(types.StaticSection):
+    order = types.ListAttribute('order', default=[4, 0, 2])
+    """USA! USA!"""
 
 def setup(bot):
     bot.config.define_section('rainbow', RainbowSection)
@@ -62,6 +65,26 @@ def rainbow_cmd(bot, trigger):
     if bot.config.rainbow.random_start:
         for _ in range(len(colors)):
             next(color_cycle)
+
+    bot.say(
+        ''.join(
+            char if unicodedata.category(char) == 'Zs'
+            else formatting.color(char, next(color_cycle))
+            for char in text
+        )
+    )
+
+@module.commands('usa')
+def usa_cmd(bot, trigger):
+    """Distribute FREEDOM."""
+    text = clean(trigger.group(2))
+
+    if text == None:
+        bot.reply("I can't distribute FREEDOM out of nothing!")
+        return module.NOLIMIT
+
+    colors = bot.config.usa.order
+    color_cycle = itertools.cycle(colors)
 
     bot.say(
         ''.join(
