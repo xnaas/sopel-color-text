@@ -21,7 +21,7 @@ else:
 COLOR_SCHEMES = {
     'rainbow': [4, 7, 8, 3, 12, 2, 6],
     'usa':     [4, 0, 2],
-    'commie':  [0, 2, 4],
+    'commie':  [4, 8],
     'spooky':  [8, 7, 0],
 }
 SCHEME_ERRORS = {
