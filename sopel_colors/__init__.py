@@ -105,14 +105,14 @@ def commie_cmd(bot, trigger):
 
 @module.commands('spooky')
 def spooky_cmd(bot, trigger):
-    """Racist commie command."""
+    """Spooky! 👻"""
     text = clean(trigger.group(2))
 
     if text == None:
         bot.reply("I need text to spookify!")
         return module.NOLIMIT
 
-    colors = bot.config.commie.order
+    colors = bot.config.spooky.order
     color_cycle = itertools.cycle(colors)
 
     bot.say(
