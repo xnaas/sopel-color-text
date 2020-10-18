@@ -24,17 +24,27 @@ COLOR_SCHEMES = {
     'commie':  [0, 2, 4],
     'spooky':  [8, 7, 0],
 }
+SCHEME_ERRORS = {
+    'rainbow': "I can't make a rainbow out of nothing!",
+    'usa':     "I can't distribute FREEDOM out of nothing!",
+    'commie':  "I need text to commie-ize!",
+    'spooky':  "I need text to spookify!",
+}
 
 @module.commands('rainbow', 'usa', 'commie', 'spooky')
 def rainbow_cmd(bot, trigger):
     """Make text colored."""
-    text = clean(trigger.group(2))
+    text = clean(trigger.group(2) or '')
+    scheme = trigger.group(1).lower()
 
-    if text == None:
-        bot.reply("I can't work with nothing!")
+    if not text:
+        try:
+            msg = SCHEME_ERRORS[scheme]
+        except KeyError:
+            msg = "How did you do that?!"
+        bot.reply(msg)
         return module.NOLIMIT
 
-    scheme = trigger.group(1).lower()
     try:
         colors = COLOR_SCHEMES[scheme]
     except KeyError:
