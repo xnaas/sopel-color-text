@@ -18,30 +18,12 @@ if hasattr(formatting, 'plain'):
 else:
     clean = lambda t: t
 
-class RainbowSection(types.StaticSection):
-    order = types.ListAttribute('order', default=[4, 7, 8, 3, 12, 2, 6])
-    """The order of color codes to use.
-
-    Defaults to a standard ROYGBIV rainbow (assuming readers' clients use
-    typical IRC color code mappings)."""
-
-class USASection(types.StaticSection):
-    order = types.ListAttribute('order', default=[4, 0, 2])
-    """USA! USA!"""
-
-class CommieSection(types.StaticSection):
-    order = types.ListAttribute('order', default=[0, 2, 4])
-    """God damn commies."""
-
-class SpookySection(types.StaticSection):
-    order = types.ListAttribute('order', default=[8, 7, 0])
-    """Spooky! 👻"""
-
-def setup(bot):
-    bot.config.define_section('rainbow', RainbowSection)
-    bot.config.define_section('usa', USASection)
-    bot.config.define_section('commie', CommieSection)
-    bot.config.define_section('spooky', SpookySection)
+COLOR_SCHEMES = {
+    'rainbow': [4, 7, 8, 3, 12, 2, 6],
+    'usa': [4, 0, 2],
+    'commie': [0, 2, 4],
+    'spooky': [8, 7, 0],
+}
 
 @module.commands('rainbow')
 def rainbow_cmd(bot, trigger):
@@ -52,7 +34,7 @@ def rainbow_cmd(bot, trigger):
         bot.reply("I can't make a rainbow out of nothing!")
         return module.NOLIMIT
 
-    colors = bot.config.rainbow.order
+    colors = COLOR_SCHEMES['rainbow']
     color_cycle = itertools.cycle(colors)
 
     bot.say(
@@ -72,7 +54,7 @@ def usa_cmd(bot, trigger):
         bot.reply("I can't distribute FREEDOM out of nothing!")
         return module.NOLIMIT
 
-    colors = bot.config.usa.order
+    colors = COLOR_SCHEMES['usa']
     color_cycle = itertools.cycle(colors)
 
     bot.say(
@@ -92,7 +74,7 @@ def commie_cmd(bot, trigger):
         bot.reply("I need text to commie-ize!")
         return module.NOLIMIT
 
-    colors = bot.config.commie.order
+    colors = COLOR_SCHEMES['commie']
     color_cycle = itertools.cycle(colors)
 
     bot.say(
@@ -112,7 +94,7 @@ def spooky_cmd(bot, trigger):
         bot.reply("I need text to spookify!")
         return module.NOLIMIT
 
-    colors = bot.config.spooky.order
+    colors = COLOR_SCHEMES['spooky']
     color_cycle = itertools.cycle(colors)
 
     bot.say(
