@@ -20,81 +20,29 @@ else:
 
 COLOR_SCHEMES = {
     'rainbow': [4, 7, 8, 3, 12, 2, 6],
-    'usa': [4, 0, 2],
-    'commie': [0, 2, 4],
-    'spooky': [8, 7, 0],
+    'usa':     [4, 0, 2],
+    'commie':  [0, 2, 4],
+    'spooky':  [8, 7, 0],
 }
 
-@module.commands('rainbow')
+@module.commands('rainbow', 'usa', 'commie', 'spooky')
 def rainbow_cmd(bot, trigger):
-    """Make text into a rainbow."""
+    """Make text colored."""
     text = clean(trigger.group(2))
 
     if text == None:
-        bot.reply("I can't make a rainbow out of nothing!")
+        bot.reply("I can't work with nothing!")
         return module.NOLIMIT
 
-    colors = COLOR_SCHEMES['rainbow']
-    color_cycle = itertools.cycle(colors)
-
-    bot.say(
-        ''.join(
-            char if unicodedata.category(char) == 'Zs'
-            else formatting.color(char, next(color_cycle))
-            for char in text
-        )
-    )
-
-@module.commands('usa')
-def usa_cmd(bot, trigger):
-    """Distribute FREEDOM."""
-    text = clean(trigger.group(2))
-
-    if text == None:
-        bot.reply("I can't distribute FREEDOM out of nothing!")
+    scheme = trigger.group(1).lower()
+    try:
+        colors = COLOR_SCHEMES[scheme]
+    except KeyError:
+        # not possible to reach this at time of writing, but who knows?
+        # mistakes happen when updating stuff that needs to be changed in parallel
+        bot.reply("I don't know what color sequence to use for '{}'!".format(scheme))
         return module.NOLIMIT
 
-    colors = COLOR_SCHEMES['usa']
-    color_cycle = itertools.cycle(colors)
-
-    bot.say(
-        ''.join(
-            char if unicodedata.category(char) == 'Zs'
-            else formatting.color(char, next(color_cycle))
-            for char in text
-        )
-    )
-
-@module.commands('commie')
-def commie_cmd(bot, trigger):
-    """Racist commie command."""
-    text = clean(trigger.group(2))
-
-    if text == None:
-        bot.reply("I need text to commie-ize!")
-        return module.NOLIMIT
-
-    colors = COLOR_SCHEMES['commie']
-    color_cycle = itertools.cycle(colors)
-
-    bot.say(
-        ''.join(
-            char if unicodedata.category(char) == 'Zs'
-            else formatting.color(char, next(color_cycle))
-            for char in text
-        )
-    )
-
-@module.commands('spooky')
-def spooky_cmd(bot, trigger):
-    """Spooky! 👻"""
-    text = clean(trigger.group(2))
-
-    if text == None:
-        bot.reply("I need text to spookify!")
-        return module.NOLIMIT
-
-    colors = COLOR_SCHEMES['spooky']
     color_cycle = itertools.cycle(colors)
 
     bot.say(
