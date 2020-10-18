@@ -33,10 +33,15 @@ class CommieSection(types.StaticSection):
     order = types.ListAttribute('order', default=[0, 2, 4])
     """God damn commies."""
 
+class SpookySection(types.StaticSection):
+    order = types.ListAttribute('order', default=[8, 7, 0])
+    """Spooky! 👻"""
+
 def setup(bot):
     bot.config.define_section('rainbow', RainbowSection)
     bot.config.define_section('usa', USASection)
     bot.config.define_section('commie', CommieSection)
+    bot.config.define_section('spooky', SpookySection)
 
 @module.commands('rainbow')
 def rainbow_cmd(bot, trigger):
@@ -85,6 +90,26 @@ def commie_cmd(bot, trigger):
 
     if text == None:
         bot.reply("I need text to commie-ize!")
+        return module.NOLIMIT
+
+    colors = bot.config.commie.order
+    color_cycle = itertools.cycle(colors)
+
+    bot.say(
+        ''.join(
+            char if unicodedata.category(char) == 'Zs'
+            else formatting.color(char, next(color_cycle))
+            for char in text
+        )
+    )
+
+@module.commands('spooky')
+def spooky_cmd(bot, trigger):
+    """Racist commie command."""
+    text = clean(trigger.group(2))
+
+    if text == None:
+        bot.reply("I need text to spookify!")
         return module.NOLIMIT
 
     colors = bot.config.commie.order
