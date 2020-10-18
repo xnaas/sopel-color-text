@@ -18,101 +18,41 @@ if hasattr(formatting, 'plain'):
 else:
     clean = lambda t: t
 
-class RainbowSection(types.StaticSection):
-    order = types.ListAttribute('order', default=[4, 7, 8, 3, 12, 2, 6])
-    """The order of color codes to use.
+COLOR_SCHEMES = {
+    'rainbow': [4, 7, 8, 3, 12, 2, 6],
+    'usa':     [4, 0, 2],
+    'commie':  [0, 2, 4],
+    'spooky':  [8, 7, 0],
+}
+SCHEME_ERRORS = {
+    'rainbow': "I can't make a rainbow out of nothing!",
+    'usa':     "I can't distribute FREEDOM out of nothing!",
+    'commie':  "I need text to commie-ize!",
+    'spooky':  "I need text to spookify!",
+}
 
-    Defaults to a standard ROYGBIV rainbow (assuming readers' clients use
-    typical IRC color code mappings)."""
-
-class USASection(types.StaticSection):
-    order = types.ListAttribute('order', default=[4, 0, 2])
-    """USA! USA!"""
-
-class CommieSection(types.StaticSection):
-    order = types.ListAttribute('order', default=[0, 2, 4])
-    """God damn commies."""
-
-class SpookySection(types.StaticSection):
-    order = types.ListAttribute('order', default=[8, 7, 0])
-    """Spooky! 👻"""
-
-def setup(bot):
-    bot.config.define_section('rainbow', RainbowSection)
-    bot.config.define_section('usa', USASection)
-    bot.config.define_section('commie', CommieSection)
-    bot.config.define_section('spooky', SpookySection)
-
-@module.commands('rainbow')
+@module.commands('rainbow', 'usa', 'commie', 'spooky')
 def rainbow_cmd(bot, trigger):
-    """Make text into a rainbow."""
-    text = clean(trigger.group(2))
+    """Make text colored."""
+    text = clean(trigger.group(2) or '')
+    scheme = trigger.group(1).lower()
 
-    if text == None:
-        bot.reply("I can't make a rainbow out of nothing!")
+    if not text:
+        try:
+            msg = SCHEME_ERRORS[scheme]
+        except KeyError:
+            msg = "How did you do that?!"
+        bot.reply(msg)
         return module.NOLIMIT
 
-    colors = bot.config.rainbow.order
-    color_cycle = itertools.cycle(colors)
-
-    bot.say(
-        ''.join(
-            char if unicodedata.category(char) == 'Zs'
-            else formatting.color(char, next(color_cycle))
-            for char in text
-        )
-    )
-
-@module.commands('usa')
-def usa_cmd(bot, trigger):
-    """Distribute FREEDOM."""
-    text = clean(trigger.group(2))
-
-    if text == None:
-        bot.reply("I can't distribute FREEDOM out of nothing!")
+    try:
+        colors = COLOR_SCHEMES[scheme]
+    except KeyError:
+        # not possible to reach this at time of writing, but who knows?
+        # mistakes happen when updating stuff that needs to be changed in parallel
+        bot.reply("I don't know what color sequence to use for '{}'!".format(scheme))
         return module.NOLIMIT
 
-    colors = bot.config.usa.order
-    color_cycle = itertools.cycle(colors)
-
-    bot.say(
-        ''.join(
-            char if unicodedata.category(char) == 'Zs'
-            else formatting.color(char, next(color_cycle))
-            for char in text
-        )
-    )
-
-@module.commands('commie')
-def commie_cmd(bot, trigger):
-    """Racist commie command."""
-    text = clean(trigger.group(2))
-
-    if text == None:
-        bot.reply("I need text to commie-ize!")
-        return module.NOLIMIT
-
-    colors = bot.config.commie.order
-    color_cycle = itertools.cycle(colors)
-
-    bot.say(
-        ''.join(
-            char if unicodedata.category(char) == 'Zs'
-            else formatting.color(char, next(color_cycle))
-            for char in text
-        )
-    )
-
-@module.commands('spooky')
-def spooky_cmd(bot, trigger):
-    """Spooky! 👻"""
-    text = clean(trigger.group(2))
-
-    if text == None:
-        bot.reply("I need text to spookify!")
-        return module.NOLIMIT
-
-    colors = bot.config.spooky.order
     color_cycle = itertools.cycle(colors)
 
     bot.say(
